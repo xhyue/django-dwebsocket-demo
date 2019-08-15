@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="../static/js/jquery-1.9.1.min.js"></script>
+</head>
+<body>
+    <div>
+        <p>
+            <input type="button" name="on" id="on" value="on">
+        </p>
+        <p>
+            <input type="button" name="off" id="off" value="off">
+        </p>
+        <p>
+            <input type="text" id="user_id" name="user_id" value="1">
+        </p>
+
+
+    <script>
+        // 页面初始化,建立长连接
+        $(function () {
+            console.log("###");
+            var socket = new WebSocket("ws:" + window.location.host + "/build_socket/" + $('#user_id').val());
+            socket.onopen = function () {
+                console.log('WebSocket open');//成功连接上Websocket
+            };
+            socket.onmessage = function (e) {
+                console.log('message: ' + e.data);//打印服务端返回的数据
+            };
+            socket.onclose = function (e) {
+                console.log('close' );
+            };
+
+        $('#on').on('click',function () {
+            //var socket = new WebSocket("ws:" + window.location.host + "/build_socket/" + $('#user_id').val());
+            socket.send($('#on').val());
+            //socket.onopen = function () {
+           //     console.log('WebSocket open');//成功连接上Websocket
+               // socket.send($('#on').val());
+           // };
+            //socket.onmessage = function (e) {
+           //     console.log('message: ' + e.data);//打印服务端返回的数据
+           // };
+        });
+});
+        $('#off').on('click',function () {
+            var socket = new WebSocket("ws:" + window.location.host + "/build_socket/" + $('#user_id').val());
+            socket.onopen = function () {
+                console.log('WebSocket open');//成功连接上Websocket
+                socket.send($('#off').val());
+            };
+            socket.onmessage = function (e) {
+                console.log('message: ' + e.data);//打印服务端返回的数据
+            };
+        });
+    </script>
+</body>
+</html>
